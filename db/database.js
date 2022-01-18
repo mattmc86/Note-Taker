@@ -2,19 +2,19 @@ const fs = require("fs");
 const util = require("util");
 const uniqID = require('uniqID'); 
 
-const readFileAsync = util.promisify("fs.readFile");
-const writeFileAsync = util.promisify("fs.writeFile");
+const readFileAsync = util.promisify(fs.readFile);
+const writeFileAsync = util.promisify(fs.writeFile);
 
-class NotesData {
-    readDBjson(){
+class Db {
+    readDbJson =()=> {
         return readFileAsync("db/db.json", "utf-8")
     }
-    writeData(newNote){
-        return writeFileAsync("db/db.json", JSON.stringify(newNote))
+    writeData = (note) =>{
+        return writeFileAsync("db/db.json", JSON.stringify(note))
 
     }
 
-    getNotes(){
+    getAllNotes(){
         return this.readDBjson().then((note)=>{
             let parsedNote 
             try {
@@ -23,8 +23,7 @@ class NotesData {
                 parsedNote = [];
             }
         })
-    
-        
+     
     }
 
     addNote(note){
@@ -40,8 +39,6 @@ class NotesData {
             id: uniqID
         }
 
-
-
         return this.getNotes()
         .then((note) => [...note, postNewNote])
         .then((updateNote) => { this.writeData(updateNote)})
@@ -56,3 +53,5 @@ class NotesData {
     }
 
 }
+
+module.exports = new Db();
