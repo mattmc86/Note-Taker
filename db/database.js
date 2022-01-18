@@ -15,7 +15,7 @@ class Db {
     }
 
     getAllNotes(){
-        return this.readDBjson().then((note)=>{
+        return this.readDbJson().then((note)=>{
             let parsedNote 
             try {
                 parsedNote = [].concat(JSON.parse(note))
